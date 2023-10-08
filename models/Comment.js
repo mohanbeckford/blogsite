@@ -8,15 +8,14 @@ const Comment = sequelize.define('Comment', {
   }
 });
 
-// CREATING SSOCITION BETWEEN USER.JS, BLOGPOST.JS AND COMMENTS.JS
-
 Comment.associate = models => {
   Comment.belongsTo(models.User, {
     foreignKey: 'UserId'
   });
 
   Comment.belongsTo(models.BlogPost, {
-    foreignKey: 'BlogPostId'
+    foreignKey: 'BlogPostId',
+    onDelete: 'CASCADE'
   });
 };
 

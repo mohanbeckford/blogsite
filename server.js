@@ -1,23 +1,24 @@
+const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
-const path = require('path');
+const app = express();
 const session = require('express-session');
 const dotenv = require('dotenv');
 
-// This loads environment variables from .env
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
-// This block of code set Handlebars as the view engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+const hbs = exphbs.create({});
+
+// Set Handlebars as the view engine
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // Static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// This is the express session middleware block of code
+// Express session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,

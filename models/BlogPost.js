@@ -12,9 +12,6 @@ const BlogPost = sequelize.define('BlogPost', {
   }
 });
 
-// CREATING ASSOCITION BETWEEN USER.JS, BLOGPOST.JS AND COMMENTS.JS
-
-
 BlogPost.associate = models => {
   BlogPost.belongsTo(models.User, {
     foreignKey: 'UserId'
@@ -25,6 +22,5 @@ BlogPost.associate = models => {
     onDelete: 'CASCADE'
   });
 };
-
 
 module.exports = BlogPost;
