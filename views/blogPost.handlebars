@@ -1,24 +1,35 @@
 {{> header}}
-<h1>{{post.title}}</h1>
-<p>{{post.contents}}</p>
-<p>Posted by: {{post.User.username}}</p>
-<p>Date: {{post.createdAt}}</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>{{post.title}}</h1>
+      <p>{{post.contents}}</p>
+      <p><strong>Posted by:</strong> {{post.User.username}}</p>
+      <p><strong>Date:</strong> {{post.createdAt}}</p>
 
-<h2>Comments:</h2>
-<ul>
-  {{#each comments}}
-    <li>
-      <strong>{{this.User.username}}</strong>
-      <span>{{this.createdAt}}</span>
-      <p>{{this.text}}</p>
-    </li>
-  {{/each}}
-</ul>
+      <h2>Comments:</h2>
+      <ul class="list-group">
+        {{#each comments}}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>{{this.User.username}}</strong>
+                <span>{{this.createdAt}}</span>
+              </div>
+              <p>{{this.text}}</p>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
 
-<h2>Add a Comment:</h2>
-<form action="/blog/{{post.id}}/comment" method="post">
-  <textarea name="commentText" placeholder="Your comment"></textarea>
-  <button type="submit">Submit</button>
-</form>
-
+      <h2>Add a Comment:</h2>
+      <form action="/blog/{{post.id}}/comment" method="post">
+        <div class="form-group">
+          <textarea class="form-control" name="commentText" placeholder="Your comment"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
 {{> footer}}
