@@ -1,34 +1,76 @@
+
+
+
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
-const app = express();
 const session = require('express-session');
 const dotenv = require('dotenv');
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const models = require('./models');
+const authController = require('./controllers/authController');
+const blogController = require('./controllers/blogController');
+const dashboardController = require('./controllers/dashboardController');
 
-dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-const PORT = process.env.PORT || 3000;
+const hbs = exphbs.create({ helpers: {} });
 
-const hbs = exphbs.create({});
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {
+    maxAge: 300000,
+    httpOnly: true,
+    secure: false,
+    sameSite: 'strict',
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize,
+  }),
+};
 
-// Set Handlebars as the view engine
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// Static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(session(sess));
 
-// Express session middleware
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true
-}));
 
-// Our Routes! Where do you want to go :) lol
-app.use('/', require('./routes/index'));
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/blog', require('./routes/blogRoutes'));
-app.use('/dashboard', require('./routes/dashboardRoutes'));
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// Using individual controller functions as middleware
+app.post('/auth/signup', authController.signup);
+app.post('/auth/login', authController.login);
+app.get('/auth/logout', authController.logout);
+
+app.use('/blog/getAllBlogPosts', blogController.getAllBlogPosts);
+app.use('/blog/getBlogPostById', blogController.getBlogPostById);
+app.use('/blog/addComment', blogController.addComment);
+
+app.use('/dashboard/getUserBlogPosts', dashboardController.getUserBlogPosts);
+app.use('/dashboard/createBlogPost', dashboardController.createBlogPost);
+app.use('/dashboard/updateBlogPost', dashboardController.updateBlogPost);
+app.use('/dashboard/deleteBlogPost', dashboardController.deleteBlogPost);
+
+
+
+sequelize.sync({ force: false }).then(() => {
+  console.log('Database synced');
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+});
+
+app.get('/', (req, res) => {
+  res.render('home');
+});
+
+
+app.get('/blogpost/:id', blogController.getBlogPostById);
+
+

@@ -25,8 +25,9 @@
     "express": "^4.17.1",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.33.0",
+    "sequelize": "^6.3.5",
     "sequelize-cli": "^6.6.1"
   }
 }

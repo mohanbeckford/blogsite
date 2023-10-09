@@ -1,28 +1,45 @@
 {{> header}}
-<h1>Dashboard</h1>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Dashboard</h1>
 
-<h2>Your Blog Posts</h2>
-<ul>
-  {{#each userBlogPosts}}
-    <li>
-      <strong><a href="/blog/{{this.id}}">{{this.title}}</a></strong>
-      <form action="/dashboard/{{this.id}}/update" method="post">
-        <input type="text" name="title" placeholder="New Title">
-        <textarea name="contents" placeholder="New Contents"></textarea>
-        <button type="submit">Update</button>
+      <h2>Your Blog Posts</h2>
+      <ul class="list-group">
+        {{#each userBlogPosts}}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong><a href="/blog/{{this.id}}">{{this.title}}</a></strong>
+              <div class="btn-group" role="group" aria-label="Actions">
+                <form action="/dashboard/{{this.id}}/update" method="post">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="title" placeholder="New Title">
+                  </div>
+                  <div class="form-group">
+                    <textarea class="form-control" name="contents" placeholder="New Contents"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+                <form action="/dashboard/{{this.id}}/delete" method="post">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2>Create a New Blog Post</h2>
+      <form action="/dashboard/create" method="post">
+        <div class="form-group">
+          <input type="text" class="form-control" name="title" placeholder="Title" required>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" name="contents" placeholder="Contents" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
       </form>
-      <form action="/dashboard/{{this.id}}/delete" method="post">
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  {{/each}}
-</ul>
-
-<h2>Create a New Blog Post</h2>
-<form action="/dashboard/create" method="post">
-  <input type="text" name="title" placeholder="Title" required>
-  <textarea name="contents" placeholder="Contents" required></textarea>
-  <button type="submit">Create</button>
-</form>
-
+    </div>
+  </div>
+</div>
 {{> footer}}
