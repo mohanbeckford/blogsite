@@ -3,6 +3,14 @@
   <div class="row">
     <div class="col">
       <h1 class="text-center">Welcome To Mohan's Blog Site</h1>
+      {{#each blogPosts}}
+        <div class="blog-post">
+          <h2>{{title}}</h2>
+          <p>{{contents}}</p>
+          <p>Author: {{User.username}}</p>
+          <hr>
+        </div>
+      {{/each}}
     </div>
   </div>
 </div>
