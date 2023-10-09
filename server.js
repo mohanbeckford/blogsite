@@ -51,8 +51,44 @@ sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 });
 
-app.get('/', (req, res) => {
-  res.render('home');
+// app.get('/', (req, res) => {
+//   res.render('home');
+// });
+
+app.get('/', async (req, res) => {
+  try {
+    // Fetch the blog posts from your database
+    const blogPosts = await fetchBlogPostsFromDatabase();
+
+    // Render the 'home' view and pass the blog post data
+    res.render('home', { blogPosts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.get('/blogpost/:id', blogRouter);  
+
+app.get('/blogpost/:id', async (req, res) => {
+  try {
+    const blogPostId = req.params.id;
+
+    
+    const blogPost = await fetchBlogPostByIdFromDatabase(blogPostId); //GET POST BY ID
+
+    res.render('blogpost', { blogPost }); //DISPLAY PPOSY USING TEMPLATE
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+ 
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
