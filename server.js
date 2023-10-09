@@ -1,6 +1,3 @@
-
-
-
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
@@ -8,10 +5,10 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const models = require('./models');
-const authController = require('./controllers/authController');
-const blogController = require('./controllers/blogController');
-const dashboardController = require('./controllers/dashboardController');
+
+const authRouter = require('./controllers/authController');
+const dashboardRouter = require('../blogsite/controllers/dashboardController');
+const blogRouter = require('./controllers/blogController');  
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -42,24 +39,12 @@ app.set('view engine', 'handlebars');
 
 app.use(session(sess));
 
+// Use the auth and dashboard routers
+app.use('/auth', authRouter);
+app.use('/dashboard', dashboardRouter);
 
-
-
-// Using individual controller functions as middleware
-app.post('/auth/signup', authController.signup);
-app.post('/auth/login', authController.login);
-app.get('/auth/logout', authController.logout);
-
-app.use('/blog/getAllBlogPosts', blogController.getAllBlogPosts);
-app.use('/blog/getBlogPostById', blogController.getBlogPostById);
-app.use('/blog/addComment', blogController.addComment);
-
-app.use('/dashboard/getUserBlogPosts', dashboardController.getUserBlogPosts);
-app.use('/dashboard/createBlogPost', dashboardController.createBlogPost);
-app.use('/dashboard/updateBlogPost', dashboardController.updateBlogPost);
-app.use('/dashboard/deleteBlogPost', dashboardController.deleteBlogPost);
-
-
+// Use blogRouter for the /blog route
+app.use('/blog', blogRouter);
 
 sequelize.sync({ force: false }).then(() => {
   console.log('Database synced');
@@ -70,7 +55,4 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-
-app.get('/blogpost/:id', blogController.getBlogPostById);
-
-
+app.get('/blogpost/:id', blogRouter);  

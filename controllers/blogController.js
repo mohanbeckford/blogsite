@@ -1,11 +1,11 @@
-
-
-
+const express = require('express');
+const router = express.Router();
 const BlogPost = require('../models/BlogPost');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 
-const getAllBlogPosts = async (req, res, next) => {
+// Route to get all blog posts
+router.get('/', async (req, res) => {
   try {
     const blogPosts = await BlogPost.findAll({
       include: [
@@ -22,9 +22,10 @@ const getAllBlogPosts = async (req, res, next) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-};
+});
 
-const getBlogPostById = async (req, res) => {
+// Route to get a specific blog post by ID
+router.get('/:id', async (req, res) => {
   try {
     const blogPost = await BlogPost.findByPk(req.params.id, {
       include: [
@@ -41,9 +42,10 @@ const getBlogPostById = async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-};
+});
 
-const addComment = async (req, res) => {
+// Route to add a comment to a blog post
+router.post('/comment/:id', async (req, res) => {
   try {
     const comment = await Comment.create({
       text: req.body.commentText,
@@ -55,10 +57,6 @@ const addComment = async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-};
+});
 
-module.exports = {
-  getAllBlogPosts,
-  getBlogPostById,
-  addComment
-};
+module.exports = router;
