@@ -1,30 +1,54 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
 
-const User = sequelize.define('User', {
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
+const BlogPost = require('./BlogPost');
+
+class User extends Model {}
+
+// cretae table user on init
+User.init(
+  {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
-});
+  {
+    sequelize,
+    timestamps: true,
+    freezeTableName: true,
+    underscored: true,
+    modelName: "User",
+  },
 
-// CREATING SSOCITION BETWEEN USER.JS, BLOGPOST.JS AND COMMENTS.JS
+  // {
+  //   sequelize,
+  //   modelName: 'User',
+  // }
 
-User.associate = models => {
-  User.hasMany(models.BlogPost, {
-    foreignKey: 'UserId',
-    onDelete: 'CASCADE'
-  });
 
-  User.hasMany(models.Comment, {
-    foreignKey: 'UserId',
-    onDelete: 'CASCADE'
-  });
-};
+);
+
+
+// Define the association
+// User.hasMany(BlogPost, {
+//   foreignKey: {
+//     name: 'UserId', 
+//     allowNull: false
+//   },
+// });
 
 module.exports = User;
