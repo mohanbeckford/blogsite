@@ -3,47 +3,49 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const User = require('../models/User');
 
+// User signup
+router.post('/signup', async (req, res) => {
+  const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-router.get('/signup', (req, res) => {
-  res.render('signup');
-}); 
-const signup = async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const existingUser = await User.findOne({ where: { username } });
 
-    const user = await User.create({
-      username: req.body.username,
-      password: hashedPassword
-    });
+    if (existingUser) {
+      res.render('signup', { error: 'Username already exists' });
+    } else {
+      await User.create({
+        username,
+        password: hashedPassword
+      });
 
-    req.session.user = user;
-    res.redirect('/dashboard');
+      res.redirect('/dashboard');
+    }
   } catch (error) {
-    console.error(error);
+    console.error('Error creating user:', error);
     res.status(500).send('Internal Server Error');
   }
-};
-
-router.get('/login', (req, res) => {
-  res.render('login');
 });
 
-const login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ where: { username } });
+// User login
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(400).send('Invalid username or password');
-    }
+  const user = await User.findOne({ where: { username } });
 
-    req.session.user = user;
+  if (user && await bcrypt.compare(password, user.password)) {
+    req.session.userId = user.id;
+    req.session.userName = username;
+    req.session.save(() => {
+      req.session.userId = user.id;
+      req.session.userName = username;
+    });
+
     res.redirect('/dashboard');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+  } else {
+    res.render('login', { error: 'Invalid credentials' });
   }
-};
+});
 
 const logout = (req, res) => {
   req.session.destroy(err => {
@@ -55,8 +57,6 @@ const logout = (req, res) => {
   });
 };
 
-router.post('/signup', signup);
-router.post('/login', login);
 router.get('/logout', logout);
 
 module.exports = router;

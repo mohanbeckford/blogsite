@@ -4,6 +4,19 @@ const BlogPost = require('../models/BlogPost');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 
+
+// Import the functions
+const {
+  fetchBlogPostsFromDatabase,
+  createBlogPost,
+  getBlogPostById,
+  updateBlogPost,
+  deleteBlogPost,
+  createComment,
+  deleteComment,
+} = require('../routes/dashboardRoutes');
+
+
 // Route to get all blog posts
 router.get('/', async (req, res) => {
   try {

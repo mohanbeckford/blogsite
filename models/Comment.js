@@ -1,22 +1,47 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+// const { DataTypes } = require('sequelize');
+// const sequelize = require('../config/connection');
 
-const Comment = sequelize.define('Comment', {
-  text: {
-    type: DataTypes.TEXT,
-    allowNull: false
+// const Comment = sequelize.define('Comment', {
+//   text: {
+//     type: DataTypes.TEXT,
+//     allowNull: false
+//   }
+// });
+
+
+// module.exports = Comment;
+
+
+// load required modules
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
+// class comments
+class Comment extends Model {}
+// on init cretae table
+Comment.init(
+  {
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    post_Id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    user: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    timestamps: true,
+    freezeTableName: true,
+    underscored: true,
+    modelName: "Comment",
   }
-});
+);
 
-Comment.associate = models => {
-  Comment.belongsTo(models.User, {
-    foreignKey: 'UserId'
-  });
-
-  Comment.belongsTo(models.BlogPost, {
-    foreignKey: 'BlogPostId',
-    onDelete: 'CASCADE'
-  });
-};
-
+// exports comments
 module.exports = Comment;
+
