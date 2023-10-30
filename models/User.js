@@ -1,26 +1,23 @@
-
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 const BlogPost = require('./BlogPost');
 
 class User extends Model {}
 
-// cretae table user on init
+// Define the User model
 User.init(
   {
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -32,23 +29,13 @@ User.init(
     freezeTableName: true,
     underscored: true,
     modelName: "User",
-  },
-
-  // {
-  //   sequelize,
-  //   modelName: 'User',
-  // }
-
-
+  }
 );
 
-
-// Define the association
+// // Define the association with BlogPost
 // User.hasMany(BlogPost, {
-//   foreignKey: {
-//     name: 'UserId', 
-//     allowNull: false
-//   },
+//   foreignKey: 'user_id',
+//   onDelete: 'CASCADE',
 // });
 
 module.exports = User;

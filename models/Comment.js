@@ -1,36 +1,35 @@
-// const { DataTypes } = require('sequelize');
-// const sequelize = require('../config/connection');
-
-// const Comment = sequelize.define('Comment', {
-//   text: {
-//     type: DataTypes.TEXT,
-//     allowNull: false
-//   }
-// });
-
-
-// module.exports = Comment;
-
-
-// load required modules
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
-// class comments
+
 class Comment extends Model {}
-// on init cretae table
+
 Comment.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    post_Id: {
+    post_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true, // Allow null values
+      references: {
+        model: 'BlogPost',
+        key: 'id',
+      },
     },
-    user: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true, 
+      references: {
+        model: 'User',
+        key: 'id',
+      },
     },
   },
   {
@@ -42,6 +41,4 @@ Comment.init(
   }
 );
 
-// exports comments
 module.exports = Comment;
-
