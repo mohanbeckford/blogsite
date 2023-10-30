@@ -7,7 +7,7 @@
 
     <main class="container mt-4">
         <article class="post">
-            {{#each post3}}
+            {{#each posts3}}
             <h1>{{title}}</h1>
             <p class="post-content">{{content}}</p>
             {{/each}}
@@ -23,9 +23,9 @@
             </div>
             {{/each}}
             <h3>Add a Comment</h3>
-            <form method="POST" action="/posts/add-comment">
+            <form method="POST" action="/posts/add-comment/{{id}}">
                 <script>
-                    document.write('<input type="hidden" name="post_Id" value="{{pid}}">');
+                    document.write('<input type="hidden" name="post_id" value="' + pid + '">');
                     document.write('<input type="hidden" name="commentsurl" value="' + location.href + '">');
                 </script>
                 

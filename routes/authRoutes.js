@@ -1,12 +1,5 @@
-// const express = require('express');
-// const router = express.Router();
-// const authController = require('../controllers/authController');
 
-// router.post('/signup', authController.signup); //USER SIGN UP
-// router.post('/login', authController.login); // USER LOGIN
-// router.get('/logout', authController.logout);// USER LOGOUT
-
-// module.exports = router;
+const authController = require('../controllers/authController');
 
 
 // loads required module
@@ -45,6 +38,8 @@ router.post('/signup', async (req, res) => {
     handleErrors(res, 'Error creating user:', 500);
   }
 });
+
+//---------------------
     
 //     else {
 //       const user = await User.create({
@@ -58,7 +53,7 @@ router.post('/signup', async (req, res) => {
 //     res.status(500).send('Internal Server Error');
 //   }
 // });
-
+ 
 // Login page
 router.get('/login', (req, res) => {
   res.render('login');
@@ -88,22 +83,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-//   const user = await User.findOne({ where: { username } });
-
-//   if (user && await bcrypt.compare(password, user.password)) {
-//     req.session.userId = user.id;
-//     req.session.userName = username;
-//     req.session.save(() => {
-//       req.session.userId = user.id;
-//       req.session.userName = username;
-//     });
-
-//     res.redirect('/dashboard');
-    
-//   } else {
-//     res.render('login', { error: 'Invalid credentials' });
-//   }
-// });
 
 // Logout
 router.get('/logout', (req, res) => {
@@ -111,6 +90,8 @@ router.get('/logout', (req, res) => {
   res.send('<center><br><br><font size="5">You are logged out ! <br><br> <a href="/">Go Home</a></font></center>');
  
 });
+
+
 // exports router
 module.exports = router;
 

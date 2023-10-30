@@ -1,42 +1,40 @@
-const Sequelize = require("sequelize");
+const { Model, DataTypes } = require("sequelize"); 
 const sequelize = require("../config/connection");
 const User = require('./User');
 
+class BlogPost extends Model {}
 
-// class BlogPost extends Model {}
-
-const BlogPost = sequelize.define(
-  "BlogPost",
+BlogPost.init(
   {
-    // Define your attributes here
+
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+
     title: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING, 
       allowNull: false,
     },
+    
     content: {
-      type: Sequelize.TEXT,
+      type: DataTypes.TEXT, 
       allowNull: false,
     },
-
-    user: {
-      type: Sequelize.INTEGER,
+    username: {
+      type: DataTypes.STRING, 
       allowNull: false,
     },
-
-   UserId: {
-  type: Sequelize.INTEGER,
-  allowNull: false,
-  references: {
-    model: User, 
-    key: 'id'    
-  },
-},
-
-
-    // username: {
-    //   type: Sequelize.STRING,
-    //   allowNull: false,
-    // },
+    user_id: {
+      type: DataTypes.INTEGER, 
+      allowNull: true,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
   },
   {
     sequelize,
@@ -47,16 +45,14 @@ const BlogPost = sequelize.define(
   }
 );
 
-// User.hasMany(BlogPost, {
-//   foreignKey: 'UserId',
-//   onDelete: 'CASCADE',
-// });
+
+
+module.exports = BlogPost;
+
 
 BlogPost.associate = (models) => {
   BlogPost.belongsTo(models.User, {
-    foreignKey: 'UserId',
+    foreignKey: 'user_id', 
     onDelete: 'CASCADE',
   });
 };
-
-module.exports = BlogPost;
