@@ -20,6 +20,6 @@ CREATE TABLE Comment (
   content TEXT NOT NULL,
   post_id INT,
   user_id INT,
-  FOREIGN KEY (post_id) REFERENCES BlogPost(id),
+  FOREIGN KEY (post_id) REFERENCES Post(id),
   FOREIGN KEY (user_id) REFERENCES User(id)
 );
