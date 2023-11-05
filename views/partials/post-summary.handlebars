@@ -1,0 +1,37 @@
+
+
+
+<section class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4">
+                <div class="card-body">
+                    
+                    <h3 class="card-title">
+                        <a href="/post/{{0.id}}">{{0.title}}</a>
+                    </h3>
+                    <p class="card-subtitle mb-2 text-muted">
+                        {{format_time 0.createdAt}}
+                    </p>
+                    <p class="card-text">{{format_summary 0.content}}</p>
+                </div>
+
+            
+            </div>
+            {{#if 1.title}}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        
+                        <h3 class="card-title">
+                            <a href="/post/{{1.id}}">{{1.title}}</a>
+                        </h3>
+                        <p class="card-subtitle mb-2 text-muted">
+                            {{format_time 1.createdAt}}
+                        </p>
+                        <p class="card-text">{{format_summary 1.content}}</p>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</section>

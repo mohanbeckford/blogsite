@@ -1,41 +1,57 @@
+
 const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
 const sequelize = require("../config/connection");
-const BlogPost = require('./BlogPost');
 
-class User extends Model {}
+class User extends Model {
+    //checking user password with bcrypt
+    checkPassword(loginPw) {
+        return bcrypt.compareSync(loginPw, this.password);
+    }
+}
 
-// Define the User model
+//user model, table, object
 User.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+      
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [6],
+            },
+        },
+       
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    timestamps: true,
-    freezeTableName: true,
-    underscored: true,
-    modelName: "User",
-  }
+    {
+        
+        hooks: {
+    
+            async beforeCreate(newUserData) {
+                //encrypt password user passed in
+                newUserData.password = await bcrypt.hash(
+                    newUserData.password,
+                    10
+                );
+                return newUserData;
+            },
+        },
+        sequelize,
+        freezeTableName: true,
+        underscored: true,
+        modelName: "user",
+    }
 );
 
-// // Define the association with BlogPost
-// User.hasMany(BlogPost, {
-//   foreignKey: 'user_id',
-//   onDelete: 'CASCADE',
-// });
-
 module.exports = User;
+

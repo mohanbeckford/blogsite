@@ -1,30 +1,69 @@
+
+
+
+{{!< main}}
+
 {{> header}}
-   <div class="container mt-4">
-  <div class="row">
+
+<div class="row tophead">
     <div class="col">
-      <h1 class="text-center py-2" style="background-color: #007BFF; color: white;">Login</h1>
+        <h1 class="text-center py-2" style="background-color: #007BFF; color: white;">Login</h1>
     </div>
-  </div>
-    <main>
-        <div class="container">
-            {{#if error}}
-            <div class="alert alert-danger" role="alert">
-                {{error}}
-            </div>
-            {{/if}}
-            <form method="post" action="/auth/login" class="login-form">
-                <div class="form-group mt-4">
-                    <label for="username" class="font-weight-bold">Username:</label>
-                    <input type="text" id="username" name="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="font-weight-bold">Password:</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-        </div>
-    </main>
 </div>
 
+<section class="hero has-background-grey-lighter is-medium">
+    <div class="hero-body">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form class="box">
+                        <div class="form-group">
+                            <label class="label">Username</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. username"
+                                    class="form-control username-input"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="label">Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </div>
+                                <input
+                                    type="password"
+                                    placeholder="*******"
+                                    class="form-control password-input"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <a class="btn btn-info" href="/signup/">
+                                Sign up
+                            </a>
+                            <a class="btn btn-success login-button button is-success">
+                                Login
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {{> footer}}
+<script src="/public/js/login.js"></script>
+

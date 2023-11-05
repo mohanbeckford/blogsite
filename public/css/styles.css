@@ -1,0 +1,23 @@
+.blog-post {
+    border: 1px solid #ccc; 
+    padding: 30px; 
+    margin-bottom: 30px; 
+}
+
+.latest{
+    background-color: black;
+    color: white;
+}
+
+.tophead{
+    margin-bottom: 100px;
+}
+
+
+.delete-comment {
+    text-decoration: underline;
+}
+
+.delete-comment:hover {
+    cursor: pointer;
+}
