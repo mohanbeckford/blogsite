@@ -1,10 +1,13 @@
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
+
+
+const withAuth = (req, res, next) => {
+  if (req.session.loggedIn) {
     return next();
+  } else {
+    res.redirect('/login');
   }
-  res.redirect('/login');
 };
 
-module.exports = { isAuthenticated };
+module.exports = withAuth;
 
-  
+

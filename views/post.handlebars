@@ -1,0 +1,71 @@
+{{!< main}}
+
+{{> header}}
+
+<div class="row tophead">
+    <div class="col">
+        <h1 class="text-center py-2" style="background-color: #007BFF; color: white;">Comments</h1>
+    </div>
+</div>
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <section class="section">
+                <div class="columns">
+                    <div class="column is-8 is-offset-2">
+                        <div class="content is-medium">
+                            <h1 class="title">{{postData.title}}</h1>
+                            <p>{{postData.content}}</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <p class="small">
+                    <strong class="mr-2">Author:</strong>{{postData.user.username}} |
+                    <strong class="ml-2 mr-2">Created on:</strong>{{format_time postData.createdAt}}
+                </p>
+            </section>
+            <hr class="my-4">
+            <div class="column is-8 is-offset-2">
+                <div class="form-group">
+                    <h3 for="comment" class="label">Comment:</h3>
+                    <div class="control">
+                        <textarea
+                            class="form-control comment-input"
+                            id="comment"
+                            placeholder="What are your thoughts on this blog post?"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="control">
+                        <button class="btn btn-success comment-submit button">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-8 is-offset-2" id="comment-section">
+                {{#each postData.comments as |cmt|}}
+                    <article class="message">
+                        <div class="message-body">
+                            {{cmt.comment}}
+                            <p class="has-text-right">
+                                <strong>
+                                    - {{cmt.user.username}},
+                                    {{format_time cmt.createdAt}}
+                                </strong>
+                                <span class="delete-comment" data-id="{{cmt.id}}">Delete</span>
+                            </p>
+                        </div>
+                    </article>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="current-post-id is-invisible">{{postData.id}}</div>
+</section>
+
+{{> footer}}
+<script src="/public/js/post.js"></script>

@@ -1,15 +1,22 @@
-// Function to format a date
-const formatDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
-  
-  // Function to truncate text
-  const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return `${text.substring(0, maxLength)}...`;
-    }
-    return text;
-  };
-  
-  module.exports = { formatDate, truncateText };
+module.exports = {
+  format_time: (date) => {
+      if (!(date instanceof Date)) {
+          return ""; 
+      }
+
+      return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+      });
+  },
+  format_summary: (content) => {
+      if (content.length > 300) {
+          return content.substring(0, 300) + "...";
+      } else {
+          return content;
+      }
+  },
+};
